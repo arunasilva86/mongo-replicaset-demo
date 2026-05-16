@@ -4,6 +4,9 @@ This is a simple app that you can use to test the behaviour of the mongo db repl
 This app will set up below containers in your docker runtime
 * mongo db cluster with replica set (one primary and 2 secondary)
 * A sample app that does basic crud operation with the mongo cluster
+# Architecture
+
+![Architecture](application-architecture.png)
 
 # How to run the application
 
