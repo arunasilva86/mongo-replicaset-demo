@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongo1:
+    image: mongo:7
+    container_name: mongo1
+    ports:
+      - "27017:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo1_data:/data/db
+
+  mongo2:
+    image: mongo:7
+    container_name: mongo2
+    ports:
+      - "27018:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo2_data:/data/db
+
+  mongo3:
+    image: mongo:7
+    container_name: mongo3
+    ports:
+      - "27019:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo3_data:/data/db
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo1:27017,mongo2:27017,mongo3:27017/students?replicaSet=rs0
+
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+
